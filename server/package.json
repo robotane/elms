@@ -1,0 +1,36 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "elms server",
+    "main": "app.js",
+    "scripts": {
+        "start": "node ./src/app.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon ./src/app.js"
+    },
+    "keywords": [
+        "lms"
+    ],
+    "author": "robotane",
+    "license": "ISC",
+    "dependencies": {
+        "@apollo/federation": "^0.28.0",
+        "@prisma/client": "^2.28.0",
+        "apollo-server": "^3.1.1",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "express-jwt": "^6.0.0",
+        "graphql": "^15.5.1",
+        "graphql-middleware": "^6.0.10",
+        "graphql-shield": "^7.5.0",
+        "jsonwebtoken": "^8.5.1",
+        "morgan": "^1.10.0",
+        "passport": "^0.4.1",
+        "passport-jwt": "^4.0.0"
+    },
+    "devDependencies": {
+        "prisma": "^2.27.0"
+    }
+}

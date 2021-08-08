@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// TODO: Add homeworks feature for student
+
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Utilisateur {
+    id           Int           @id @default(autoincrement())
+    email        String
+    motDePasse   String
+    idProp       String
+    role         Role
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+    commentaires Commentaire[]
+
+    @@unique([email, role])
+}
+
+model Commentaire {
+    id                Int             @id @default(autoincrement())
+    utilisateur       Utilisateur     @relation(fields: [idUtilisateur], references: [id])
+    idUtilisateur     Int
+    contenuEducatif   ContenuEducatif @relation(fields: [idContenuEducatif], references: [id])
+    idContenuEducatif Int
+    contenu           String          @db.Text
+    createdAt         DateTime        @default(now())
+    updatedAt         DateTime        @updatedAt
+}
+
+model Filiere {
+    id          Int        @id @default(autoincrement())
+    nom         String
+    description String?
+    ufr         String
+    lienWeb     String?
+    semestres   Semestre[]
+}
+
+model Semestre {
+    id          Int         @id @default(autoincrement())
+    nom         String
+    description String?
+    filiere     Filiere?    @relation(fields: [idFiliere], references: [id])
+    idFiliere   Int?
+    promotions  Promotion[]
+    modules     Module[]
+}
+
+model Promotion {
+    id          Int        @id @default(autoincrement())
+    nom         String
+    description String?
+    annee       String
+    semestre    Semestre   @relation(fields: [idSemestre], references: [id])
+    idSemestre  Int        @unique
+    etudiants   Etudiant[]
+}
+
+model Etudiant {
+    id          String    @id
+    nom         String
+    prenom      String
+    email       String    @unique
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+    noTelephone String    @unique
+    anneeBac    String
+    promotion   Promotion @relation(fields: [idPromotion], references: [id])
+    idPromotion Int
+}
+
+model Module {
+    id              Int               @id @default(autoincrement())
+    nom             String
+    description     String
+    coefficient     Int
+    contenuEducatif ContenuEducatif[]
+    semestre        Semestre          @relation(fields: [idSemestre], references: [id])
+    idSemestre      Int
+}
+
+model ContenuEducatif {
+    id           Int                 @id @default(autoincrement())
+    nom          String
+    type         TypeContenuEducatif @default(COURS)
+    description  String?
+    createdAt    DateTime            @default(now())
+    updatedAt    DateTime            @updatedAt
+    contenu      String              @db.LongText
+    references   Json?
+    duree        Int
+    ressources   Json?
+    enseignants  Enseignant[]
+    module       Module              @relation(fields: [idModule], references: [id])
+    idModule     Int
+    commentaires Commentaire[]
+}
+
+model Enseignant {
+    id              String            @id
+    nom             String
+    prenom          String
+    email           String            @unique
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @updatedAt
+    grade           Grade             @default(DOCTEUR)
+    specialite      String
+    contenuEducatif ContenuEducatif[]
+}
+
+enum Role {
+    ETUDIANT
+    ENSEIGNANT
+    ADMIN
+}
+
+enum Grade {
+    DOCTORANT
+    DOCTEUR
+    MAITRE_DE_CONFERENCE
+    PROFESSEUR
+}
+
+enum TypeContenuEducatif {
+    COURS
+    TD
+    EXERCICES
+    DEVOIR
+    EXPOSE
+}
