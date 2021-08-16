@@ -30,25 +30,10 @@ export const GET_FILIERES_QUERY = gql`
     }
 `;
 
-export const REGISTER_USER = gql`
-    mutation register(
-        $username: String!
-        $email: String!
-        $password: String!
-        $confirmPassword: String!
-    ) {
-        register(
-            registerInput: {
-                username: $username
-                email: $email
-                password: $password
-                confirmPassword: $confirmPassword
-            }
-        ) {
+export const LOGIN_USER = gql`
+    mutation connexion($email: String!, $motDePasse: String!, $role: Role!) {
+        connexion(email: $email, motDePasse: $motDePasse, role: $role) {
             id
-            email
-            username
-            createdAt
             token
         }
     }
@@ -66,6 +51,8 @@ export const INSCRIPTION_MUTATION = gql`
         $anneeBac: String
         $idPromotion: ID
         $noTelephone: String
+        $grade: Grade
+        $specialite: String
     ) {
         inscription(
             inscriptionInput: {
@@ -79,6 +66,8 @@ export const INSCRIPTION_MUTATION = gql`
                 anneeBac: $anneeBac
                 role: $role
                 idPromotion: $idPromotion
+                grade: $grade
+                specialite: $specialite
             }
         ) {
             id

@@ -1,12 +1,12 @@
 import React from 'react';
 import 'semantic-ui-css/semantic.min.css';
 import './App.css';
-import RegisterForm from './pages/register';
+import LoginForm from './pages/Login';
 
 function App() {
     return (
         <div>
-            <RegisterForm />
+            <LoginForm />
         </div>
     );
 }
