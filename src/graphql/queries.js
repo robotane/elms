@@ -34,6 +34,9 @@ export const LOGIN_USER = gql`
     mutation connexion($email: String!, $motDePasse: String!, $role: Role!) {
         connexion(email: $email, motDePasse: $motDePasse, role: $role) {
             id
+            email
+            role
+            idProp
             token
         }
     }

@@ -1,12 +1,15 @@
 import { useMutation } from '@apollo/client';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { YearInput } from 'semantic-ui-calendar-react-17';
-import { Button, Form, Header, Select } from 'semantic-ui-react';
+import { Button, Form, Header, Message, Select } from 'semantic-ui-react';
 import * as Yup from 'yup';
+import { AuthContext } from '../../context/auth';
 import { Grade, INSCRIPTION_MUTATION, Role } from '../../graphql/queries';
+import { setErrorsWrapper } from '../../util/setErrors';
 
-export const RegForm = ({ filieres, isStudent }) => {
-    const [errors, setErrors] = useState({});
+export const RegForm = ({ filieres, isStudent, history }) => {
+    const context = useContext(AuthContext);
+    const [errors, setErrors] = useState({ hasErrors: true });
     const [values, setValues] = useState({
         id: '',
         nom: '',
@@ -19,7 +22,7 @@ export const RegForm = ({ filieres, isStudent }) => {
         anneeBac: '',
         noTelephone: '',
         grade: undefined,
-        specialite: '',
+        specialite: undefined,
         indexFiliere: undefined,
     });
 
@@ -43,19 +46,38 @@ export const RegForm = ({ filieres, isStudent }) => {
             }
         ) */,
         role: Yup.string().required('Le role ne peut être vide'),
-        idPromotion: Yup.string().required('Veuillez choisir une promotion'),
-        anneeBac: Yup.string().required("L'année du Bac ne peut être vide"),
-        noTelephone: Yup.string().required(
-            'Le numéro de téléphone ne peut être vide'
+        idPromotion: Yup.string().test(
+            'required',
+            'Veuillez choisir une promotion',
+            (value) => !isStudent || value
         ),
-        grade: Yup.string().required('Le grade ne peut être vide'),
-        specialite: Yup.string().required('La  spécialité ne peut être vide'),
+        anneeBac: Yup.string().test(
+            'required',
+            "L'année du Bac ne peut être vide",
+            (value) => !isStudent || value
+        ),
+        noTelephone: Yup.string().test(
+            'required',
+            'Le numéro de téléphone ne peut être vide',
+            (value) => !isStudent || value
+        ),
+        grade: Yup.string().test(
+            'required',
+            'Le grade ne peut être vide',
+            (value) => isStudent || value
+        ),
+        specialite: Yup.string().test(
+            'required',
+            'La  spécialité ne peut être vide',
+            (value) => isStudent || value
+        ),
         indexFiliere: Yup.number(),
     });
 
     const [addUser, { loading }] = useMutation(INSCRIPTION_MUTATION, {
-        update(result) {
-            console.log(result);
+        update(_, { data: { connexion: userData } }) {
+            context.login(userData);
+            history.push('/');
         },
         variables: ((v) => {
             const { indexFiliere, ...ret } = v;
@@ -65,7 +87,7 @@ export const RegForm = ({ filieres, isStudent }) => {
             role: isStudent ? Role.ETUDIANT : Role.ENSEIGNANT,
         }),
         onError(error) {
-            setErrors(error.graphQLErrors[0].extensions.errors);
+            setErrorsWrapper(setErrors, error, errors);
         },
     });
 
@@ -80,20 +102,19 @@ export const RegForm = ({ filieres, isStudent }) => {
         Yup.reach(schema, name)
             .validate(values[name])
             .then(() => {
-                setErrors(
-                    ((v) => {
-                        const { [name]: _, ...ret } = v;
-                        return ret;
-                    })(errors)
-                );
+                const { [name]: _, hasErrors, ...rest } = errors;
+                setErrors({
+                    ...rest,
+                    hasErrors: Object.keys(rest).length < 1,
+                });
             })
             .catch((err) => {
-                console.log(err);
+                console.log(JSON.stringify(err, null, 2));
                 setErrors({ ...errors, [name]: err.errors[0] });
             });
     };
     const onChange = (event, { name, value }) => {
-        event.preventDefault();
+        event && event.preventDefault();
         setValues({ ...values, [name]: value });
     };
 
@@ -300,12 +321,15 @@ export const RegForm = ({ filieres, isStudent }) => {
                     onChange={onChange}
                 />
             </Form.Group>
+            {errors.general && (
+                <Message
+                    negative
+                    header='Erreur de connexion'
+                    content={errors.general}
+                />
+            )}
 
-            <Button
-                type='submit'
-                primary
-                // disabled={Object.keys(errors).length > 0}
-            >
+            <Button type='submit' primary /* disabled={errors.hasErrors} */>
                 Inscription
             </Button>
         </Form>

@@ -1,9 +1,44 @@
+:root {
+    --side-bar-width: 15rem;
+    --side-bar-mini-width: 5rem;
+    --side-bar-default-width: 15rem;
+    --nav-bar-height: 4rem;
+}
+
 .login-form-container {
     width: auto;
     margin: auto;
 }
 .register-form-container {
-    margin-top: 10px;
     width: auto;
     margin: auto;
+}
+
+.app-content {
+    margin-top: var(--nav-bar-height) !important;
+    margin-left: var(--side-bar-width) !important;
+}
+
+.nav-bar {
+    position: fixed !important;
+    height: var(--nav-bar-height) !important;
+}
+
+.nav-bar-site-logo {
+    width: var(--side-bar-default-width);
+}
+
+.sideBar {
+    width: var(--side-bar-width) !important;
+    overflow-y: auto;
+    margin-top: var(--nav-bar-height) !important;
+    transition: width 0.4s ease-in-out;
+}
+
+.mobile-side-bar {
+    overflow-y: auto;
+}
+
+.mobile-app-content {
+    margin-top: var(--nav-bar-height) !important;
 }
