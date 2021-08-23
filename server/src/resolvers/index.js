@@ -5,6 +5,7 @@ const filierResolvers = require('./filiere');
 const contenuEducatifResolvers = require('./contenuEducatif');
 const commentaireResolvers = require('./commentaire');
 const promotionResolvers = require('./promotion');
+const enseignantResolvers = require('./enseignant');
 
 module.exports = {
     ContenuEducatif: contenuEducatifResolvers.ContenuEducatif,
@@ -19,6 +20,7 @@ module.exports = {
         ...filierResolvers.Query,
         ...contenuEducatifResolvers.Query,
         ...promotionResolvers.Query,
+		...enseignantResolvers.Query,
         // ...commentaireResolvers.Query,
     },
     Mutation: {

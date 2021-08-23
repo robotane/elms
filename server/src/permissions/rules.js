@@ -14,8 +14,9 @@ module.exports = {
   /**
    * Verifie si l'utilisateur actuellement connecte est l'auteur du contenu educatif.
    */
-  isContEdOwner: rule()(async (_parent, { idContenuEducatif }, { prisma }) => {
+  isContEdOwner: rule()(async (_parent, { idContenuEducatif }, context) => {
     const user = checkAuth(context);
+    const { prisma } = context;
     const contEd = await prisma.contenuEducatif.findUnique({
       where: { id: Number(idContenuEducatif) },
       select: {
@@ -25,7 +26,6 @@ module.exports = {
         },
       },
     });
-
     return contEd.enseignants.length > 0;
   }),
 
