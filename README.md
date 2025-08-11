@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# ELMS - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ce dépôt contient le client frontend pour la plateforme **ELMS (E-Learning Management System)**. C'est une Single-Page Application (SPA) développée avec React qui consomme l'API GraphQL du backend.
 
-## Available Scripts
+## Fonctionnalités
 
-In the project directory, you can run:
+-   Interface utilisateur pour l'inscription et la connexion.
+-   Tableau de bord pour les utilisateurs connectés.
+-   Interaction avec le backend via des requêtes GraphQL.
+-   Gestion de l'état d'authentification côté client.
 
-### `npm start`
+## Technologies utilisées
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+-   **Framework :** React.js
+-   **Client GraphQL :** Apollo Client
+-   **Routage :** React Router
+-   **Bibliothèque UI :** Semantic UI React
+-   **Gestion d'état :** React Context
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Démarrage rapide
 
-### `npm test`
+### Prérequis
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-   Node.js et npm
+-   Le [serveur backend ELMS](https://github.com/robotane/elms) doit être en cours d'exécution.
 
-### `npm run build`
+### Installation et configuration
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1.  **Cloner le dépôt et installer les dépendances :**
+    ```bash
+    git clone https://github.com/robotane/elms.git
+    cd elms
+    # La branche 'client' est généralement la branche par défaut
+    npm install
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2.  **Configurer l'endpoint de l'API :**
+    L'application doit savoir où se trouve le serveur GraphQL. Par défaut, elle cherche sur `http://localhost:4000`. Si votre serveur tourne sur une autre adresse, vous pouvez créer un fichier `.env` pour la spécifier :
+    ```
+    REACT_APP_GRAPHQL_ENDPOINT=http://VOTRE_ADRESSE_BACKEND
+    ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3.  **Lancer l'application :**
+    ```bash
+    npm start
+    ```
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+L'application sera accessible à l'adresse `http://localhost:3000`.
